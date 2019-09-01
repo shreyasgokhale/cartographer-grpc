@@ -14,24 +14,6 @@ RUN apt-get update -qq \
   && apt-get install -y build-essential autoconf libtool pkg-config \
   && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Copy rosinstall files
-COPY cartographer.rosinstall /catkin_ws/
-
-# Make catkin_ws folder and pull rosinstalls in the dir
-RUN mkdir /catkin_ws/src -p \
-  && cd /catkin_ws \
-  && wstool init --shallow src cartographer.rosinstall 
-
-
-# Install GRPC
-RUN cd /grpc \
-    && git submodule update --init \
-    && make install 
-
-# (If) for some reason protobuf is not installed, install it from the source
-RUN cd /grpc/third_party/protobuf \
-  && make install
-
 # Install some remaining CMakeDebs for Asyc GRPC (As per install_deb script)
 RUN apt-get update -y \
     && apt-get install -y \
@@ -44,6 +26,24 @@ RUN apt-get update -y \
     libgflags-dev \
     libgoogle-glog-dev 
 
+# Copy rosinstall files
+COPY cartographer.rosinstall /catkin_ws/
+
+
+# Make catkin_ws folder and pull rosinstalls in the dir
+RUN mkdir /catkin_ws/src -p \
+  && cd /catkin_ws \
+  && wstool init --shallow src cartographer.rosinstall 
+
+# Install GRPC
+RUN cd /grpc \
+    && git submodule update --init \
+    && make install 
+
+# (If) for some reason protobuf is not installed, install it from the source
+RUN cd /grpc/third_party/protobuf \
+  && make install
+
 # Change working directory
 WORKDIR /catkin_ws
 
@@ -55,7 +55,25 @@ RUN src/cartographer/scripts/install_async_grpc.sh
 
 # Make the project folder
 RUN rosdep update \    
-  && apt-get update -qq \
   && rosdep install --from-paths src --ignore-src --rosdistro=${ROS_DISTRO} -y \
-  && apt-get clean && rm -rf /var/lib/apt/lists/* \
-  && bash -c "source /opt/ros/${ROS_DISTRO}/setup.bash; catkin_make_isolated --install --use-ninja --cmake-args -DBUILD_GRPC=ON"
+  && apt clean && rm -rf /var/lib/apt/lists/* 
+
+# catkin_install_isolated
+RUN bash -c "source /opt/ros/${ROS_DISTRO}/setup.bash; catkin_make_isolated --install --use-ninja --cmake-args -DBUILD_GRPC=ON"
+
+RUN apt-get update -y
+
+# Just in case the config did not get copied
+COPY postinstall/cloud.launch /catkin_ws/install_isolated/share/cartographer_ros/launch/cloud.launch
+COPY postinstall/cloud_server.lua /catkin_ws/install_isolated/share/cartographer_ros/configuration_files/cloud_server.lua 
+COPY postinstall/cloud_slam.lua /catkin_ws/install_isolated/share/cartographer_ros/configuration_files/cloud_slam.lua
+COPY postinstall/wait-for-it.sh /wait-for-it.sh
+
+# Copy start script
+COPY start_server.sh /start_server.sh
+
+# Wait for it script, for future use
+RUN chmod +x /wait-for-it.sh
+
+# Start server script
+RUN chmod +x /start_server.sh

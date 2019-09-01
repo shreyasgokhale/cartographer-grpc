@@ -1,0 +1,24 @@
+version : '3'
+
+services:
+  # roscore_master:
+  #   image: ros:melodic-ros-core
+  #   container_name: master
+  #   network_mode: "host"
+  #   command: ["bash", "-c" , "roscore -p 11311"]
+  cartographer_server:
+    build: 
+      context: ./install/
+      dockerfile: Dockerfile
+    privileged: true
+    # "/wait-for-it.sh", "localhost:11111", "--",
+    command: ["bash", "-c", "/start_server.sh"]
+    volumes:
+      - "./data/:/data/"
+      - "/tmp/.X11-unix:/tmp/.X11-unix"
+    network_mode: "host"
+    environment:
+      - "DISPLAY=$DISPLAY"
+      - "QT_X11_NO_MITSHM=1"
+    devices:
+      - "/dev/dri:/dev/dri"
