@@ -15,12 +15,12 @@
         type="cartographer_grpc_node" args="
             -configuration_directory $(find cartographer_ros)/configuration_files
             -configuration_basename cloud_slam.lua
-            -server_address 192.168.88.254:55555
+            -server_address 0.0.0.0:55555
             -client_id 3"
         output="screen">
     </node>
-        <node name="rviz_3" pkg="rviz" type="rviz" required="false"
-        args="-d $(find cartographer_ros)/configuration_files/demo_2d.rviz" />
+    <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros"
+      type="cartographer_occupancy_grid_node" args="-resolution 0.05" />
    </group>
 </launch>
 
