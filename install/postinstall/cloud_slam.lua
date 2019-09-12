@@ -39,7 +39,7 @@ TRAJECTORY_BUILDER_2D.min_range = 1 -- Min range of the LIDAR, default 0
 TRAJECTORY_BUILDER_2D.max_range = 40. -- Max range of the LIDAR, default 30
 --TRAJECTORY_BUILDER_2D.submaps.num_range_data  =  90-- Size of submaps Default 90
 TRAJECTORY_BUILDER_2D.use_online_correlative_scan_matching = true
---TRAJECTORY_BUILDER_2D.num_accumulated_range_data = 10 -- This kinda works likes sampling. Setting 0 = no sampling. Default 1
+TRAJECTORY_BUILDER_2D.num_accumulated_range_data = 160 -- This kinda works likes sampling. Setting 0 = no sampling. Default 1
 --TRAJECTORY_BUILDER_2D.laser_min_range = 0.01
 --TRAJECTORY_BUILDER_2D.ceres_scan_matcher.ceres_solver_options.use_nonmonotonic_steps = false
 

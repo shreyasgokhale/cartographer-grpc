@@ -26,9 +26,15 @@ RUN apt-get update -y \
     libgflags-dev \
     libgoogle-glog-dev 
 
+# First, we invalidate the entire cache if  has
+# changed. This file's content changes whenever master changes. See:
+# http://stackoverflow.com/questions/36996046/how-to-prevent-dockerfile-caching-git-clone
+# This version is for server. So I added it for server branch of this repo
+
+ADD https://api.github.com/repos/shreyasgokhale/cartographer-grpc/git/refs/heads/server server.json
+
 # Copy rosinstall files
 COPY cartographer.rosinstall /catkin_ws/
-
 
 # Make catkin_ws folder and pull rosinstalls in the dir
 RUN mkdir /catkin_ws/src -p \
