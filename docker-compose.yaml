@@ -26,7 +26,7 @@ services:
     image: wxwilcke/vnc-ros-melodic-full
 #    network_mode : "host"
     environment:
-      - ROS_MASTER_URI="http://10.147.32.12:11311"
+      - "ROS_MASTER_URI=http://10.147.32.12:11311"
     ports:
       -  "6080:80"
       -  "11111"
