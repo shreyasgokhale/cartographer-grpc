@@ -53,8 +53,8 @@ TRAJECTORY_BUILDER_2D.use_online_correlative_scan_matching = true
 
 -- POSE_GRAPH.optimization_problem.huber_scale = 1e2
 -- POSE_GRAPH.optimize_every_n_nodes = 90 -- Optimization takes time. Faster the better, depends on computing power, default 90
-POSE_GRAPH.constraint_builder.min_score = 0.60 -- minimum score for local loop closure, default 0.55
-POSE_GRAPH.constraint_builder.global_localization_min_score = 0.65 --min score for global loop closure, default 0,6
+--POSE_GRAPH.constraint_builder.min_score = 0.60 -- minimum score for local loop closure, default 0.55
+--POSE_GRAPH.constraint_builder.global_localization_min_score = 0.65 --min score for global loop closure, default 0,6
 -- POSE_GRAPH.constraint_builder.sampling_ratio = 0.003 -- which ratio of scans/nodes the constraint builder tries to use for loop closing, default 0.003
 POSE_GRAPH.global_constraint_search_after_n_seconds = 5 -- default 10
 -- MAP_BUILDER.pose_graph.constraint_builder.max_constraint_distance = 200

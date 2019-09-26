@@ -10,7 +10,8 @@
     </node>
  
     <!-- Server Cartographer lua -->
-    <!-- Change server_address field in cloud_server.lua as well  -->
+
+    <!-- Change server_address field in cloud_server.lua as well -->
     <node name="cartographer_grpc_bridge_cloud" pkg="cartographer_ros"
         type="cartographer_grpc_node" args="
             -configuration_directory $(find cartographer_ros)/configuration_files
@@ -19,8 +20,9 @@
             -client_id 3"
         output="screen">
     </node>
+
     <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros"
-      type="cartographer_occupancy_grid_node" args="-resolution 0.05" />
+      type="cartographer_occupancy_grid_node" args="-resolution 0.025" />
    </group>
 </launch>
 

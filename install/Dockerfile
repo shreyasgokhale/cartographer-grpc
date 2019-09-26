@@ -44,7 +44,7 @@ RUN mkdir /catkin_ws/src -p \
 # Install GRPC
 RUN cd /grpc \
     && git submodule update --init \
-    && make install 
+    && make install
 
 # (If) for some reason protobuf is not installed, install it from the source
 RUN cd /grpc/third_party/protobuf \

@@ -23,11 +23,12 @@ services:
     devices:
       - "/dev/dri:/dev/dri"
   rosvnc:
-    image: wxwilcke/vnc-ros-melodic-full
+    image: henry2423/ros-vnc-ubuntu:melodic
 #    network_mode : "host"
     environment:
       - "ROS_MASTER_URI=http://10.147.32.12:11311"
     ports:
-      -  "6080:80"
+      - "6901:6901"
+      - "5901:5901"
       -  "11111"
       -  "11311"
