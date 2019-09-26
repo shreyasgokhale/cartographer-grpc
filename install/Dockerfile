@@ -26,9 +26,15 @@ RUN apt-get update -y \
     libgflags-dev \
     libgoogle-glog-dev 
 
+# First, we invalidate the entire cache if  has
+# changed. This file's content changes whenever master changes. See:
+# http://stackoverflow.com/questions/36996046/how-to-prevent-dockerfile-caching-git-clone
+# This version is for server. So I added it for server branch of this repo
+
+ADD https://api.github.com/repos/shreyasgokhale/cartographer_ros/git/refs/heads/master master.json
+
 # Copy rosinstall files
 COPY cartographer.rosinstall /catkin_ws/
-
 
 # Make catkin_ws folder and pull rosinstalls in the dir
 RUN mkdir /catkin_ws/src -p \
@@ -38,7 +44,7 @@ RUN mkdir /catkin_ws/src -p \
 # Install GRPC
 RUN cd /grpc \
     && git submodule update --init \
-    && make install 
+    && make install
 
 # (If) for some reason protobuf is not installed, install it from the source
 RUN cd /grpc/third_party/protobuf \
@@ -53,6 +59,8 @@ RUN src/cartographer/scripts/install_proto3.sh
 # Install Aync GRPC using script (Normal install does not work, probably due to that specific commit)
 RUN src/cartographer/scripts/install_async_grpc.sh
 
+RUN apt-get update -y
+
 # Make the project folder
 RUN rosdep update \    
   && rosdep install --from-paths src --ignore-src --rosdistro=${ROS_DISTRO} -y \
@@ -61,7 +69,6 @@ RUN rosdep update \
 # catkin_install_isolated
 RUN bash -c "source /opt/ros/${ROS_DISTRO}/setup.bash; catkin_make_isolated --install --use-ninja --cmake-args -DBUILD_GRPC=ON"
 
-RUN apt-get update -y
 
 # Just in case the config did not get copied
 COPY postinstall/cloud.launch /catkin_ws/install_isolated/share/cartographer_ros/launch/cloud.launch

@@ -1,4 +1,4 @@
-version : '3'
+version : '2'
 
 services:
   # roscore_master:
@@ -22,3 +22,13 @@ services:
       - "QT_X11_NO_MITSHM=1"
     devices:
       - "/dev/dri:/dev/dri"
+  rosvnc:
+    image: henry2423/ros-vnc-ubuntu:melodic
+#    network_mode : "host"
+    environment:
+      - "ROS_MASTER_URI=http://10.147.32.12:11311"
+    ports:
+      - "6901:6901"
+      - "5901:5901"
+      -  "11111"
+      -  "11311"
