@@ -73,7 +73,7 @@ RUN bash -c "source /opt/ros/${ROS_DISTRO}/setup.bash; catkin_make_isolated --in
 # Just in case the config did not get copied
 COPY postinstall/cloud.launch /catkin_ws/install_isolated/share/cartographer_ros/launch/cloud.launch
 COPY postinstall/cloud_server.lua /catkin_ws/install_isolated/share/cartographer_ros/configuration_files/cloud_server.lua 
-COPY postinstall/cloud_slam.lua /catkin_ws/install_isolated/share/cartographer_ros/configuration_files/cloud_slam.lua
+COPY postinstall/cloud_node.lua /catkin_ws/install_isolated/share/cartographer_ros/configuration_files/cloud_slam.lua
 
 # Copy start script
 COPY start_server.sh /start_server.sh
