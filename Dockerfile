@@ -29,7 +29,7 @@ RUN apt-get update -y \
 # First, we invalidate the entire cache if  has
 # changed. This file's content changes whenever master changes. See:
 # http://stackoverflow.com/questions/36996046/how-to-prevent-dockerfile-caching-git-clone
-# This version is for server. So I added it for server branch of this repo
+# This version is for server.
 
 ADD https://api.github.com/repos/shreyasgokhale/cartographer_ros/git/refs/heads/master master.json
 
@@ -74,13 +74,9 @@ RUN bash -c "source /opt/ros/${ROS_DISTRO}/setup.bash; catkin_make_isolated --in
 COPY postinstall/cloud.launch /catkin_ws/install_isolated/share/cartographer_ros/launch/cloud.launch
 COPY postinstall/cloud_server.lua /catkin_ws/install_isolated/share/cartographer_ros/configuration_files/cloud_server.lua 
 COPY postinstall/cloud_slam.lua /catkin_ws/install_isolated/share/cartographer_ros/configuration_files/cloud_slam.lua
-COPY postinstall/wait-for-it.sh /wait-for-it.sh
 
 # Copy start script
 COPY start_server.sh /start_server.sh
-
-# Wait for it script, for future use
-RUN chmod +x /wait-for-it.sh
 
 # Start server script
 RUN chmod +x /start_server.sh

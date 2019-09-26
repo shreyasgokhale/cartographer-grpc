@@ -1,7 +1,7 @@
-# Google Cartographer Cloud SLAM 
+# Google Cartographer Cloud SLAM  
 
-This repo provides a container for testing and using cloud capabilities of Google Cartographer using docker. Current version only starts the server part.
+Docker Hub Build version for GRPC
 
 ## How to Use
 
-Simply run ```./deploy.sh``` bash script.
+docker pull shreyasgokhale/google-cartographer-grpc

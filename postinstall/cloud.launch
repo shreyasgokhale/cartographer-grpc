@@ -12,10 +12,10 @@
     <!-- Server Cartographer lua -->
 
     <!-- Change server_address field in cloud_server.lua as well -->
-    <node name="cartographer_grpc_bridge_cloud" pkg="cartographer_ros"
+    <node name="cartographer_node" pkg="cartographer_ros"
         type="cartographer_grpc_node" args="
             -configuration_directory $(find cartographer_ros)/configuration_files
-            -configuration_basename cloud_slam.lua
+            -configuration_basename cloud_node.lua
             -server_address 0.0.0.0:55555
             -client_id 3"
         output="screen">
