@@ -2,11 +2,11 @@
 <param name="/use_sim_time" value="true" />
 
 <group>
-    <!-- Server lua -->
+    <!-- Local GRPC Server for Agent -->
     <node name="cartographer_grpc_cloud" pkg="cartographer_ros"
         type="cartographer_grpc_server.sh" args="
             -configuration_directory $(find cartographer_ros)/configuration_files
-            -configuration_basename cloud_server.lua">
+            -configuration_basename agent_server.lua">
     </node>
  
     <!-- Server Cartographer lua -->
@@ -15,7 +15,7 @@
     <node name="cartographer_node" pkg="cartographer_ros"
         type="cartographer_grpc_node" args="
             -configuration_directory $(find cartographer_ros)/configuration_files
-            -configuration_basename cloud_node.lua
+            -configuration_basename agent_node.lua
             -server_address 0.0.0.0:55555
             -client_id 3"
         output="screen">

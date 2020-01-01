@@ -61,6 +61,10 @@ RUN src/cartographer/scripts/install_async_grpc.sh
 
 RUN apt-get update -y
 
+COPY postinstall/agent_cartographer.launch /catkin_ws/src/cartographer_ros/launch/agent_cartographer.launch
+COPY postinstall/agent_server.lua /catkin_ws/src/cartographer_ros/configuration_files/agent_server.lua 
+COPY postinstall/agent_node.lua /catkin_ws/src/cartographer_ros/configuration_files/agent_node.lua
+
 # Make the project folder
 RUN rosdep update \    
   && rosdep install --from-paths src --ignore-src --rosdistro=${ROS_DISTRO} -y \
@@ -70,10 +74,10 @@ RUN rosdep update \
 RUN bash -c "source /opt/ros/${ROS_DISTRO}/setup.bash; catkin_make_isolated --install --use-ninja --cmake-args -DBUILD_GRPC=ON"
 
 
-# Just in case the config did not get copied
-COPY postinstall/cloud.launch /catkin_ws/install_isolated/share/cartographer_ros/launch/cloud.launch
-COPY postinstall/cloud_server.lua /catkin_ws/install_isolated/share/cartographer_ros/configuration_files/cloud_server.lua 
-COPY postinstall/cloud_node.lua /catkin_ws/install_isolated/share/cartographer_ros/configuration_files/cloud_node.lua
+# # Just in case the config did not get copied
+# COPY postinstall/agent_cartographer.launch /catkin_ws/install_isolated/share/cartographer_ros/launch/agent_cartographer.launch
+# COPY postinstall/agent_server.lua /catkin_ws/install_isolated/share/cartographer_ros/configuration_files/agent_server.lua 
+# COPY postinstall/agent_node.lua /catkin_ws/install_isolated/share/cartographer_ros/configuration_files/agent_node.lua
 
 # Copy start script
 COPY start_server.sh /start_server.sh
