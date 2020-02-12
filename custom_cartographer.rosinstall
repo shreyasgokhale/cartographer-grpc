@@ -1,0 +1,4 @@
+- git: {local-name: cartographer, uri: 'https://github.com/shreyasgokhale/cartographer.git'}
+- git: {local-name: cartographer_ros, uri: 'https://github.com/shreyasgokhale/cartographer_ros.git', version: 'cloud-server-testing'}
+- git: {local-name: /grpc, uri: 'https://github.com/grpc/grpc.git', version : 'v1.14.1'}
+- git: {local-name: ceres-solver, uri: 'https://ceres-solver.googlesource.com/ceres-solver.git', version: '1.13.0'}

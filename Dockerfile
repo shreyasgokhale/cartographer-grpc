@@ -29,17 +29,18 @@ RUN apt-get update -y \
 # First, we invalidate the entire cache if  has
 # changed. This file's content changes whenever master changes. See:
 # http://stackoverflow.com/questions/36996046/how-to-prevent-dockerfile-caching-git-clone
-# This version is for server.
+
+# This image depends on shreyasgokhale/cartographer_ros
 
 ADD https://api.github.com/repos/shreyasgokhale/cartographer_ros/git/refs/heads/master master.json
 
 # Copy rosinstall files
-COPY cartographer.rosinstall /catkin_ws/
+COPY custom_cartographer.rosinstall /catkin_ws/
 
 # Make catkin_ws folder and pull rosinstalls in the dir
 RUN mkdir /catkin_ws/src -p \
   && cd /catkin_ws \
-  && wstool init --shallow src cartographer.rosinstall 
+  && wstool init --shallow src custom_cartographer.rosinstall 
 
 # Install GRPC
 RUN cd /grpc \
@@ -59,28 +60,26 @@ RUN src/cartographer/scripts/install_proto3.sh
 # Install Aync GRPC using script (Normal install does not work, probably due to that specific commit)
 RUN src/cartographer/scripts/install_async_grpc.sh
 
+# Update apts for rosdep update
 RUN apt-get update -y
 
+# Copy project scripts
+COPY scripts/install_deps.sh /install_deps.sh 
+COPY scripts/compile_project.sh /compile_project.sh 
+RUN chmod +x /compile_project.sh /install_deps.sh
+
+# Compile Project
+RUN /install_deps.sh "/catkin_ws"
+RUN /compile_project.sh "/catkin_ws"
+
+# Copy additional files
 COPY postinstall/agent_cartographer.launch /catkin_ws/src/cartographer_ros/launch/agent_cartographer.launch
 COPY postinstall/agent_server.lua /catkin_ws/src/cartographer_ros/configuration_files/agent_server.lua 
 COPY postinstall/agent_node.lua /catkin_ws/src/cartographer_ros/configuration_files/agent_node.lua
-
-# Make the project folder
-RUN rosdep update \    
-  && rosdep install --from-paths src --ignore-src --rosdistro=${ROS_DISTRO} -y \
-  && apt clean && rm -rf /var/lib/apt/lists/* 
-
-# catkin_install_isolated
-RUN bash -c "source /opt/ros/${ROS_DISTRO}/setup.bash; catkin_make_isolated --install --use-ninja --cmake-args -DBUILD_GRPC=ON"
-
-
-# # Just in case the config did not get copied
-# COPY postinstall/agent_cartographer.launch /catkin_ws/install_isolated/share/cartographer_ros/launch/agent_cartographer.launch
-# COPY postinstall/agent_server.lua /catkin_ws/install_isolated/share/cartographer_ros/configuration_files/agent_server.lua 
-# COPY postinstall/agent_node.lua /catkin_ws/install_isolated/share/cartographer_ros/configuration_files/agent_node.lua
+COPY postinstall/cloud_server.lua /catkin_ws/src/cartographer_ros/configuration_files/cloud_server.lua 
 
 # Copy start script
-COPY start_server.sh /start_server.sh
+COPY scripts/start_server.sh /start_server.sh 
 
 # Start server script
-RUN chmod +x /start_server.sh
+RUN chmod +x /start_server.sh "/catkin_ws"
