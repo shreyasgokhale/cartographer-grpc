@@ -24,8 +24,9 @@ RUN apt-get update -y \
     git \
     google-mock \
     libgflags-dev \
-    libgoogle-glog-dev 
-
+    libgoogle-glog-dev\
+    libeigen3-dev
+ 
 # First, we invalidate the entire cache if  has
 # changed. This file's content changes whenever master changes. See:
 # http://stackoverflow.com/questions/36996046/how-to-prevent-dockerfile-caching-git-clone
