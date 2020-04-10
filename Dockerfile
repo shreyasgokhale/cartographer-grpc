@@ -33,7 +33,7 @@ RUN apt-get update -y \
 
 # This image depends on shreyasgokhale/cartographer_ros
 
-ADD https://api.github.com/repos/shreyasgokhale/cartographer_ros/git/refs/heads/master master.json
+ADD https://api.github.com/repos/shreyasgokhale/cartographer_ros/git/refs/heads/testing-decentralized master.json
 
 # Copy rosinstall files
 COPY custom_cartographer.rosinstall /catkin_ws/
